@@ -1,2 +1,96 @@
 # modJohn
-Detailed analysis of TYT / DMR firmware modification projects, their cryptography, and how they differ from classic vendor firmware; intended as a research reference for custom decoder and radio firmware work.
+
+Цей репозиторій — довідковий збірник для дослідження кастомних прошивок для TYT/DMR радіостанцій та їхнього шифрування.
+
+Мета:
+- показати, які відкриті проєкти існують
+- чим вони відрізняються від класичних OEM прошивок
+- як організована криптографія в кастомних збірках
+- як їх порівнювати і що варто вивчати, якщо робити свій декодер чи модифікацію
+
+## Зміст
+
+- [README.md](README.md)
+- [OpenRTX.md](OpenRTX.md)
+- [md380tools.md](md380tools.md)
+- [firm-tyt.md](firm-tyt.md)
+- [OpenDMR.md](OpenDMR.md)
+- [OpenGD77-AES256.md](OpenGD77-AES256.md)
+- [radio_tool.md](radio_tool.md)
+- [compare.md](compare.md)
+
+## Короткий висновок
+
+Кастомні прошивки для TYT/DMR радіо, як правило, не “зламують” шифрування випадково. Вони змінюють або розширюють:
+- вікна ключів і меню вводу ключів
+- розміщення ключів у флеші / codeplug
+- логіку DMR стека
+- алгоритми вбудованого коду (AES/ARC4/TEA)
+- обробку локальних параметрів (TG, slot, site, key id)
+
+Тобто, в кастомних фармах крипто-логіка часто не “замість” OEM, а “переобладнана” під спільні сценарії інженерного використання: власні ключі, доступ до параметрів, менше обмежень, відкриті команди керування, додаткові інструменти.
+
+## Чому це важливо для декодерів
+
+Якщо ви будуєте власний декодер, ключові речі — це не тільки “декодувати DMR або TETRA”, а:
+- знати, де в рації зберігається ключ
+- як формуються IV / keystream
+- який режим шифрування (AES-128, AES-256, ARC4, TEA, DES)
+- як key id /alg id / MI / slot вказані в кадрах
+- як кастомні прошивки змінюють реєстри / конфіг та UI
+
+Саме тому кастомні прошивки є хорошим джерелом логіки: вони показують, де в OEM-інтерфейсі ховається crypto and keying flow.
+
+## Основні проєкти
+
+### 1. OpenRTX
+- GitHub: https://github.com/OpenRTX/OpenRTX
+- Найбільш активний open-source напрямок
+- Призначений для багатьох TYT/MD радіо
+- Сильна точка — модульність і документація
+
+### 2. md380tools
+- GitHub: https://github.com/travisgoodspeed/md380tools
+- Класичний проект для TYT MD-380 / MD-390
+- Патчі, флеш-утиліти, інструменти для codeplug і дистрибуції
+
+### 3. firm-tyt
+- GitHub: https://github.com/WD1CKS/firm-tyt
+- Open-source варіант для TYT DMR радіо
+
+### 4. OpenDMR
+- GitHub: https://github.com/KG5RKI/OpenDMR
+- DIY-підхід і серйозне довгострокове дослідження firmware
+
+### 5. OpenGD77-AES256
+- GitHub: https://github.com/dondch/OpenGD77-AES256
+- Ключовий проєкт для ретро/DIY DMR з AES256
+
+### 6. radio_tool
+- GitHub: https://github.com/v0l/radio_tool
+- Інструмент для флешингу і пакування прошивок, менше crypto, більше технічного керування
+
+## Для кого цей репозиторій
+
+- для тих, хто працює з TYT/DMR радіостанціями
+- для тих, хто хоче зрозуміти, як виглядає кастомна прошивка
+- для тих, хто хоче побудувати свій декодер або cable/firmware integration layer
+- для тих, хто хоче вивчити ключове сховище і DMR crypto flow на реальних open projects
+
+## Важливе зауваження
+
+Цей репозиторій не є “інструкцією для злому чужих каналів”. Він зосереджений на:
+- законній локальній роботі зі своїми раціями
+- розумінні структури кастомних DMR/TYT firmware
+- криптографії в рамках власної системи або дозволеного тестового середовища
+
+# Далі
+
+- [OpenRTX.md](OpenRTX.md)
+- [md380tools.md](md380tools.md)
+- [firm-tyt.md](firm-tyt.md)
+- [OpenDMR.md](OpenDMR.md)
+- [OpenGD77-AES256.md](OpenGD77-AES256.md)
+- [radio_tool.md](radio_tool.md)
+- [compare.md](compare.md)
+
